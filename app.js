@@ -3,6 +3,7 @@ const dotenv = require('dotenv')
 const path = require('path')
 
 const errorHandler = require('./src/middlewares/errorHandler.middleware')
+const { connectDB } = require('./src/config/connectDB')
 
 const app = express()
 dotenv.config()
@@ -29,6 +30,9 @@ app.all('*', (req, res) => {
 
 // error handler middleware
 app.use(errorHandler)
+
+// connect to database
+connectDB()
 
 app.listen(PORT, () => {
     console.log(`Server runing at PORT ${PORT}...`)
