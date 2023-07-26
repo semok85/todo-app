@@ -3,17 +3,20 @@ const dotenv = require('dotenv')
 const path = require('path')
 const morgan = require('morgan')
 const cookieParser = require('cookie-parser')
+const cors = require('cors')
 
 const errorHandler = require('./src/middlewares/errorHandler.middleware')
 const { connectDB } = require('./src/config/connectDB')
 const userRouter = require('./src/routes/v1/user.router')
 const todoRouter = require('./src/routes/v1/todo.routes')
+const corsOptions = require('./src/config/corsOption')
 
 const app = express()
 dotenv.config()
 const PORT = 8000 || process.env.PORT
 
 // midleware
+app.use(cors(corsOptions))
 app.use(morgan('dev'))
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
