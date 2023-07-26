@@ -1,5 +1,6 @@
 const mongoose = require('mongoose')
 
+const { ObjectId } = mongoose.Schema
 const todoListSchema = new mongoose.Schema(
     {
         title: String,
@@ -12,6 +13,12 @@ const todoListSchema = new mongoose.Schema(
             type: String,
             enum: ['Low', 'Medium', 'High'],
         },
+        user: [
+            {
+                type: ObjectId,
+                ref: 'TodoList',
+            },
+        ],
     },
     {
         timestamps: true,
