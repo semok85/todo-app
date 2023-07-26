@@ -1,13 +1,22 @@
 const express = require('express')
 const dotenv = require('dotenv')
 const path = require('path')
+const morgan = require('morgan')
+const cookieParser = require('cookie-parser')
 
 const errorHandler = require('./src/middlewares/errorHandler.middleware')
 const { connectDB } = require('./src/config/connectDB')
+const userRouter = require('./src/routes/v1/user.router')
 
 const app = express()
 dotenv.config()
 const PORT = 8000 || process.env.PORT
+
+// midleware
+app.use(morgan('dev'))
+app.use(express.json())
+app.use(express.urlencoded({ extended: true }))
+app.use(cookieParser())
 
 // serve static file
 app.use('/', express.static(path.join(__dirname, './public')))
@@ -15,6 +24,7 @@ app.use('/', express.static(path.join(__dirname, './public')))
 app.get('^/$|/index(.html)?', (req, res) => {
     res.sendFile(path.join(__dirname, './src', 'views', 'index.html'))
 })
+app.use('/api/v1/users', userRouter)
 
 // not found page handler
 app.all('*', (req, res) => {
